@@ -4,11 +4,16 @@ import classes from "./post-content.module.scss";
 import ReactMarkdown from "react-markdown";
 import { Post } from "../post-grid";
 import Image from "next/image";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { darcula } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
+import darcula from "react-syntax-highlighter/dist/cjs/styles/prism/dracula";
+import js from "react-syntax-highlighter/dist/cjs/languages/prism/javascript";
+import css from "react-syntax-highlighter/dist/cjs/languages/prism/css";
+
 interface Props {
   post: Post;
 }
+SyntaxHighlighter.registerLanguage("js", js);
+SyntaxHighlighter.registerLanguage("css", css);
 
 const PostContent: NextPage<Props> = (props) => {
   const { post } = props;
@@ -16,7 +21,7 @@ const PostContent: NextPage<Props> = (props) => {
   const MarkdownComponents: object = {
     // Convert Markdown img to next/image component and set height, width and priority
     // example: ![AltText {priority}{768x432}](...
-    p: (paragraph) => {
+    p: (paragraph: any) => {
       const { node } = paragraph;
 
       if (node.children[0].tagName === "img") {
@@ -43,16 +48,18 @@ const PostContent: NextPage<Props> = (props) => {
       }
       return <p>{paragraph.children}</p>;
     },
-    code({ node, inline, className, children, ...props }) {
+    code(code: any) {
+      const { node, inline, className, children, ...props } = code;
       const match = /language-(\w+)/.exec(className || "");
       return !inline && match ? (
         <SyntaxHighlighter
-          children={String(children).replace(/\n$/, "")}
           style={darcula}
           language={match[1]}
           PreTag="div"
           {...props}
-        />
+        >
+          {String(children).replace(/\n$/, "")}
+        </SyntaxHighlighter>
       ) : (
         <code className={className} {...props}>
           {children}

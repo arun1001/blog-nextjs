@@ -26,11 +26,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       message,
       id: null as any,
     };
+    const connectString = `mongodb+srv://${process.env.mongo_username}:${process.env.mongo_password}@${process.env.mongo_clustername}.uyinb.mongodb.net/${process.env.mongo_db}?retryWrites=true&w=majority`;
     let client;
     try {
-      client = await MongoClient.connect(
-        "mongodb+srv://arun1001:mongopassword@cluster0.uyinb.mongodb.net/my-blog?retryWrites=true&w=majority"
-      );
+      client = await MongoClient.connect(connectString);
     } catch {
       res.status(500).json({ message: "Connection to db failed" });
       return;

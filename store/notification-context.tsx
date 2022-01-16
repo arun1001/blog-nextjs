@@ -22,13 +22,13 @@ const NotificationContext = createContext({
   hideNotification: () => {},
 });
 interface Props {
-  children: React.ReactNode;
+  children: Element[];
   notification: NotificationInterface;
-  showNotification: any;
-  hideNotification: any;
+  showNotification: (notification: NotificationInterface) => void;
+  hideNotification: () => void;
 }
 
-export const NotificationContextProvider: NextPage<Props> = (props) => {
+export const NotificationContextProvider: NextPage<any> = (props) => {
   const [activeNotification, setactiveNotification] =
     useState<NotificationInterface>(initialState);
 
