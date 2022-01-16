@@ -8,15 +8,23 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "axios": "^0.24.0",
+    "gray-matter": "^4.0.3",
+    "mongodb": "^4.3.0",
     "next": "12.0.8",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-markdown": "^7.1.2",
+    "react-syntax-highlighter": "^15.4.5"
   },
   "devDependencies": {
     "@types/node": "17.0.8",
     "@types/react": "17.0.38",
+    "@types/react-dom": "^17.0.11",
+    "@types/react-syntax-highlighter": "^13.5.2",
     "eslint": "8.6.0",
     "eslint-config-next": "12.0.8",
+    "sass": "^1.48.0",
     "typescript": "4.5.4"
   }
 }

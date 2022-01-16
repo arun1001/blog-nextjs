@@ -1,0 +1,41 @@
+import fs from "fs";
+import path from "path";
+
+import matter from "gray-matter";
+
+const postDirectory = path.join(process.cwd(), "content/posts");
+
+export const getPostData = (fileIdentifier: string) => {
+  const postSlug = fileIdentifier.replace(/\.md$/, "");
+  const filePath = path.join(postDirectory, `${postSlug}.md`);
+  const fileContent = fs.readFileSync(filePath, "utf-8");
+  const { data, content } = matter(fileContent);
+  const postData = {
+    slug: postSlug,
+    ...data,
+    date: data.date,
+    content,
+    isFeatured: data.isFeatured as boolean,
+  };
+  return postData;
+};
+
+export const getPostFiles = () => {
+  const postFiles = fs.readdirSync(postDirectory);
+  return postFiles;
+};
+
+export const getAllPosts = () => {
+  const postFiles = getPostFiles();
+  const allPosts = postFiles.map((postFile) => getPostData(postFile));
+  const sortedPosts = allPosts.sort((postA, postB) =>
+    postA.date > postB.date ? -1 : 1
+  );
+  return sortedPosts;
+};
+
+export const getFeaturedPosts = () => {
+  const allPosts = getAllPosts();
+  const featuredPosts = allPosts.filter((post) => post.isFeatured);
+  return featuredPosts;
+};
